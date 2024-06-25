@@ -15,7 +15,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y xrdp
-        sudo systemctl enable xrdp --now
+        sudo systemctl enable --now xrdp
         sudo ufw allow 3389
         echo "runneradmin:P@ssw0rd!" | sudo chpasswd
     - name: Display Tailscale Status
