@@ -9,8 +9,16 @@ jobs:
     steps:
     - name: Install Tailscale
       run: |
-        curl -fsSL https://tailscale.com/install.sh | sh
+        curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.gpg | sudo apt-key add -
+        curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+        sudo apt-get update
+        sudo apt-get install tailscale
         sudo tailscale up --authkey ${{ secrets.TAILSCALE_AUTH_KEY }}
+        # Keep tailscaled running in the background using screen
+        screen -d -m sudo tailscaled
+        # Optional: Start tailscale if not already started
+        sudo tailscale up --accept-dns=false
+
     - name: Enable Remote Desktop
       run: |
         sudo apt-get update
@@ -18,5 +26,6 @@ jobs:
         sudo systemctl enable --now xrdp
         sudo ufw allow 3389
         echo "runneradmin:P@ssw0rd!" | sudo chpasswd
+
     - name: Display Tailscale Status
       run: sudo tailscale status
