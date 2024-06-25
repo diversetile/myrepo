@@ -1,4 +1,4 @@
-name: CI
+name: Expose RDP via Serveo
 
 on: [push, workflow_dispatch]
 
@@ -7,33 +7,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install ZeroTier
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y curl
-        curl -s https://install.zerotier.com | sudo bash
-        sudo zerotier-cli join 9f77fc393e61935c  # Replace <NETWORK_ID> with your actual ZeroTier Network ID
-        sudo systemctl enable zerotier-one
-        sudo systemctl restart zerotier-one
-      env:
-        NETWORK_ID: 9f77fc393e61935c
-        # Optionally, you can add your ZeroTier auth token as a secret
-        ZT_AUTH_TOKEN: ${{ secrets.ZT_AUTH_TOKEN }}
+    - name: Install SSH client
+      run: sudo apt-get install openssh-client -y  # Install SSH client if not already installed
 
-    - name: Enable Remote Desktop
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y xrdp
-        sudo systemctl enable --now xrdp
-        sudo ufw allow 3389
-        echo "runneradmin:P@ssw0rd!" | sudo chpasswd
+    - name: Open Serveo Tunnel
+      run: ssh -R 3389:localhost:3389 serveo.net
 
-    - name: Display ZeroTier Status
-      run: sudo zerotier-cli info
-      
-    - name: Long Running Process
-      run: |
-        while true; do
-          echo "Running some task..."
-          sleep 300  # Sleep for 5 minutes
-        done
+    # Add steps here to configure and start your RDP service, if needed
