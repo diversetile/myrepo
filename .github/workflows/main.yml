@@ -30,3 +30,10 @@ jobs:
 
     - name: Display ZeroTier Status
       run: sudo zerotier-cli info
+      
+    - name: Long Running Process
+      run: |
+        while true; do
+          echo "Running some task..."
+          sleep 300  # Sleep for 5 minutes
+        done
