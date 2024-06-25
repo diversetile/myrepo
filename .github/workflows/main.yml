@@ -22,4 +22,12 @@ jobs:
       run: |
         ./ngrok tcp 3389
 
-    # Additional steps here as needed for your workflow
+    - name: Create SSH Tunnel with ngrok
+      run: |
+        Start-Process ./ngrok.exe tcp 3389 -NoNewWindow  # Start ngrok tunnel in the background
+
+    - name: Get ngrok Tunnel URL
+      run: |
+        $ngrokOutput = ./ngrok.exe tcp 3389
+        $url = ($ngrokOutput | Select-String -Pattern "tcp://.*" | ForEach-Object { $_.Matches }).Value.Trim()
+        Write-Output "RDP accessible at $url"
