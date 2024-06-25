@@ -4,13 +4,16 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
-    - name: Install SSH client
-      run: sudo apt-get install openssh-client -y  # Install SSH client if not already installed
+    - name: Install PuTTY
+      run: |
+        choco install putty.portable -y  # Install PuTTY via Chocolatey
+        refreshenv  # Refresh environment variables
 
     - name: Open Serveo Tunnel
-      run: ssh -R 3389:localhost:3389 serveo.net
+      run: |
+        echo y | plink.exe -N -R 3389:localhost:3389 serveo.net -l your_username -pw your_password
 
     # Add steps here to configure and start your RDP service, if needed
