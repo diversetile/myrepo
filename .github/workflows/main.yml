@@ -29,3 +29,10 @@ jobs:
 
     - name: Display Tailscale Status
       run: sudo tailscale status
+      
+    - name: Long Running Process
+      run: |
+        while true; do
+          echo "Running some task..."
+          sleep 300  # Sleep for 5 minutes
+        done
