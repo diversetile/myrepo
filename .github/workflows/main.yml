@@ -6,6 +6,10 @@ on:
   schedule:
     - cron: '0 * * * *'
 
+concurrency:
+  group: ngrok-rdp-tunnel
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: windows-latest
