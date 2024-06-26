@@ -1,6 +1,10 @@
 name: Expose RDP via ngrok
 
-on: [push, workflow_dispatch]
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *'
 
 jobs:
   build:
