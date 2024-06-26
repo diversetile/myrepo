@@ -3,12 +3,6 @@ name: Expose RDP via ngrok
 on:
   push:
   workflow_dispatch:
-  schedule:
-    - cron: '0 * * * *'
-
-concurrency:
-  group: ngrok-rdp-tunnel
-  cancel-in-progress: false
 
 jobs:
   build:
